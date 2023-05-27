@@ -4,7 +4,7 @@ This project is a self-assignment for school with the objective of creating a sc
 
 ## Description
 
-The User and Group Creation Script allows the user to utilize a CSV file to edit the user data of the created users and groups, as well as configure options such as the CSV path, Tenant domain, and Tenant ID.
+The User and Group Creation Script allows the user to utilize a CSV-file to edit the user data of the created users and groups, as well as configure options such as the CSV path, Tenant domain, and Tenant ID.
 
 After each step of the script, multiple checks are performed to ensure smooth progress. In case of any issues, error messages will be displayed to the user.
 
@@ -12,7 +12,7 @@ After each step of the script, multiple checks are performed to ensure smooth pr
 
 Before running the script, make sure you have the following dependencies installed:
 
-- **Powershell:** The script is written in Powershl, so ensure that you have Powersell installed on your system.
+- **Powershell:** The script is written in Powershell, so ensure that you have Powershell installed on your system.
 
  - **AzureAD PowerShell Module**: The script utilizes the AzureAD Powershell module to manage user and group operations in Azure Active Directory. If the module is not already installed, the script will automatically install it for you.
 
@@ -29,17 +29,17 @@ Before running the script, you need to configure the CSV file with the following
 -   **Location**: The location of the user.
 -   **Department**: The department to which the user belongs.
 -   **Function**: The function or role of the user.
--  **Office Location**: The office location of the user.
+-   **Office Location**: The office location of the user.
 -   **Security Group**: The security group to which the user should be added.
 -   **Password**: The password for the user account.
 
-You can find a template CSV file named "Proftaak - S2 - User & Groups.csv" in the CSV Import folder of this repository. Please use this template as a reference to structure your CSV file accordingly.
+You can find a template CSV-file named "Proftaak - S2 - User & Groups.csv" in the CSV Import folder of this repository. Please use this template as a reference to structure your CSV-file accordingly.
 
 ## Configuration
 
 Before running the script, you need to configure the following variables:
 
-- **CSV Path**: Specify the path to the CSV file containing users and groups data.
+- **CSV Path**: Specify the path to the CSV-file containing users and groups data.
 
 - **Tenant Domain**: Provide the domain name of your Azure AD tenant. This is the domain used to log in to your Azure portal.
 
