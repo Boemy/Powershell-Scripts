@@ -97,13 +97,26 @@ function CheckModule {
     }
 }
 
-################################################################################### Script ###################################################################################
-
 # Run the function called "AdminTest"
 AdminTest
 
 # Run the function called "CheckModule"
-CheckModule
+CheckModule 
+
+################################################################################### Variables ###################################################################################
+# Clear the screen 
+Clear-Host
+
+# Ask the user for the full path of the CSV file (delimited by ';') for the user & group import
+$CsvFilePath = Read-Host "Input the full path to the CSV file (delimited by ';', UTF8) for the user & group import"
+
+# Ask the user to input the Tenant ID
+$TenantID = Read-Host "Enter the Azure AD Tenant ID (You can find it in the Azure portal under Azure AD Properties)" 
+
+# Ask the user for the tenant domain name
+$TenantDomain = Read-Host "Enter the Azure AD Tenant Domain (e.g. 'twsr4.onmicrosoft.com')"
+
+################################################################################### Script ###################################################################################
 
 # Clear the screen 
 Clear-Host
@@ -112,17 +125,14 @@ Clear-Host
 $AzureAD_Connected = $false
 
 # Run the following loop until the variable "AzureAD_Connected" is not equal to "false"
-while (!$AzureAD_Connected) {
-    # Ask the user to input the email and password for an Azure administrator account with create & edit rights
-    Write-Host "Enter the email and password for an Azure administrator account with create & edit rights in the required tenant"
-
-    # Ask the user to input the Tenant ID
-    $TenantID = Read-Host "Enter the Azure AD Tenant ID (You can find it in the Azure portal under Azure AD Properties)" 
-    
+while (!$AzureAD_Connected) { 
     # Attempt to connect to Azure AD Tenant
     try {
         # Clear the screen 
         Clear-Host
+
+        # Ask the user to input the email and password for an Azure administrator account with create & edit rights
+        Write-Host "Enter the email and password for an Azure administrator account with create & edit rights in the required tenant"
 
         # Connect to the specified Azure AD Tenant
         Connect-AzureAD -TenantId $TenantID -ErrorAction SilentlyContinue 
@@ -136,11 +146,11 @@ while (!$AzureAD_Connected) {
 
         # Ask the user to check their credentials and try again
         Write-Host "! Error: Failed to connect. Please check your credentials and try again. Error: $($_.Exception.Message)"
+
+        # Ask the user to input the Tenant ID
+        $TenantID = Read-Host "Enter the Azure AD Tenant ID (You can find it in the Azure portal under Azure AD Properties)" 
     }
 }
-
-# Ask the user for the full path of the CSV file (delimited by ';') for the user & group import
-$CsvFilePath = Read-Host "Input the full path to the CSV file (delimited by ';', UTF8) for the user & group import"
 
 # Attempt to validate the provided file path & file
 try {
@@ -158,7 +168,6 @@ try {
 } catch {
     # Error handling
     Write-Host "An error occurred while validating the file path. Error: $($_.Exception.Message)"
-    return
 }
 
 # Attempt to check the required columns 
@@ -185,7 +194,6 @@ try {
 } catch {
     # Error handling
     Write-Host "An error occurred while validating the required columns. Error: $($_.Exception.Message)"
-    return
 }
 
 # Create an array to save the values of the already created groups (extra check to avoid duplicate groups)
@@ -204,7 +212,7 @@ foreach ($Row in $CsvData) {
     $OfficeLocation = $Row.OfficeLocation
     $SecurityGroups = $Row.SecurityGroup -split "`n" | ForEach-Object { $_.Trim() }
     $Password = $Row.Password
-    $Domain = "twsr4.onmicrosoft.com" # <-- Change this to the tenant domain
+    $Domain = $TenantDomain
     $UserPrincipalName = (($FirstName.Substring(0, 1) + "." + $MiddleName + $Surname) -replace '\s', '') + "." + (Get-Random -Minimum 100 -Maximum 1000) + "@" + $Domain
     
     # Check if the user already exists in Azure AD
